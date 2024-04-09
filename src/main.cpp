@@ -19,8 +19,9 @@ std::string to_string(T value) {
 }
 
 void reportError(cl_int err, const std::string& filename, int line) {
-    if (CL_SUCCESS == err)
+    if (CL_SUCCESS == err) {
         return;
+    }
 
     // Таблица с кодами ошибок:
     // libs/clew/CL/cl.h:103
@@ -36,10 +37,12 @@ std::optional<cl_device_id> findDevice(const std::vector<cl_platform_id>& platfo
     cl_device_id device;
     for (int i = 0; i < platforms.size(); i++) {
         err = clGetDeviceIDs(platforms[i], type, 1, &device, NULL);
-        if (err == CL_SUCCESS)
+        if (err == CL_SUCCESS) {
             return device;
-        if (err != CL_DEVICE_NOT_FOUND)
+        }
+        if (err != CL_DEVICE_NOT_FOUND) {
             OCL_SAFE_CALL(err);
+        }
     }
     return std::nullopt;
 }
