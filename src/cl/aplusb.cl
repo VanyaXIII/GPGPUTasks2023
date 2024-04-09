@@ -17,7 +17,7 @@ __kernel void aplusb(__global const float* as, __global const float* bs, __globa
     // OpenCL Compiler -> Built-in Functions -> Work-Item Functions
 
     int ind = get_global_id(0);
-    if (size < ind) {
+    if (size <= ind) {
         return;
     }
 
