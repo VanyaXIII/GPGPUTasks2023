@@ -40,9 +40,9 @@ int main(int argc, char** argv) {
     context.activate();
 
     int benchmarkingIters = 10; // TODO пока тестируетесь удобно выставить единицу
-    unsigned int M = 3;
-    unsigned int K = 10;
-    unsigned int N = 3;
+    unsigned int K = 1024;
+    unsigned int M = 1024;
+    unsigned int N = 1024;
     const size_t gflops =
             ((size_t) M * K * N * 2) / (1000 * 1000 * 1000);// умножить на два, т.к. операция сложения и умножения
 
@@ -101,7 +101,8 @@ int main(int argc, char** argv) {
 
     gpu::WorkSize ws1(kWorkGroupSize, kWorkGroupSize, fit(N, kWorkGroupSize), fit(M, kWorkGroupSize));
     gpu::WorkSize ws2(kWorkGroupSize, kWorkGroupSize, fit(N, kWorkGroupSize), fit(M, kWorkGroupSize));
-    gpu::WorkSize ws3(kWorkGroupSize, round_up(kWorkGroupSize, kWPT), M, round_up(K, kWPT));
+    gpu::WorkSize ws3(kWorkGroupSize, round_up(kWorkGroupSize, kWPT), fit(N, kWorkGroupSize),
+                      round_up(fit(M, kWorkGroupSize), kWPT));
 
     programs.emplace_back("naive matrix multiplication", &kernel1, &ws1);
     programs.emplace_back("matrix multiplication with local mem", &kernel2, &ws2);
